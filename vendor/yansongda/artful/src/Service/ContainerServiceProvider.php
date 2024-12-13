@@ -22,9 +22,11 @@ use Yansongda\Artful\Exception\Exception;
 class ContainerServiceProvider implements ServiceProviderInterface
 {
     private array $detectApplication = [
+        'thinkphp' => ThinkPHPApplication::class,
         'laravel'  => LaravelContainer::class,
         'hyperf'   => HyperfContainer::class,
         'thinkphp' => ThinkPHPApplication::class,
+
     ];
 
     /**

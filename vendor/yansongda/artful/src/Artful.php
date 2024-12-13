@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Yansongda\Artful;
 
@@ -52,7 +52,7 @@ class Artful
     /**
      * @throws ContainerException
      */
-    private function __construct(array $config, null|Closure|ContainerInterface $container = null)
+    private function __construct(array $config, null | Closure | ContainerInterface $container = null)
     {
         $this->registerServices($config, $container);
 
@@ -78,7 +78,7 @@ class Artful
     /**
      * @throws ContainerException
      */
-    public static function config(array $config = [], null|Closure|ContainerInterface $container = null): bool
+    public static function config(array $config = [], null | Closure | ContainerInterface $container = null): bool
     {
         if (self::hasContainer() && !($config['_force'] ?? false)) {
             return false;
@@ -100,7 +100,17 @@ class Artful
             $container = Artful::getContainer();
 
             if ($container instanceof LaravelContainer) {
-                $container->singleton($name, $value instanceof Closure ? $value : static fn () => $value);
+
+                $container->singleton($name, $value instanceof Closure ? $value: static fn() => $value);
+
+                return;
+            }
+
+            // 判断是否是 ThinkPHP 的容器
+            if ($container instanceof \think\Container) {
+                $container->bind($name, $value instanceof Closure ? $value : function () use ($value) {
+                    return $value;
+                });
 
                 return;
             }
@@ -113,7 +123,7 @@ class Artful
         } catch (ContainerNotFoundException $e) {
             throw $e;
         } catch (Throwable $e) {
-            throw new ContainerException('容器异常: '.$e->getMessage());
+            throw new ContainerException('容器异常: ' . $e->getMessage());
         }
 
         throw new ContainerException('容器异常: 当前容器类型不支持 `set` 方法');
@@ -135,7 +145,7 @@ class Artful
         } catch (ContainerNotFoundException $e) {
             throw $e;
         } catch (Throwable $e) {
-            throw new ContainerException('容器异常: '.$e->getMessage());
+            throw new ContainerException('容器异常: ' . $e->getMessage());
         }
 
         $parameters = array_values($parameters);
@@ -150,13 +160,19 @@ class Artful
     public static function get(string $service): mixed
     {
         try {
-            return Artful::getContainer()->get($service);
+            $container = Artful::getContainer();
+
+            if ($container instanceof \think\Container) {
+                return $container->make($service);
+            } else {
+                return $container->get($service);
+            }
         } catch (NotFoundExceptionInterface $e) {
-            throw new ServiceNotFoundException('服务未找到: '.$e->getMessage());
+            throw new ServiceNotFoundException('服务未找到: ' . $e->getMessage());
         } catch (ContainerNotFoundException $e) {
             throw $e;
         } catch (Throwable $e) {
-            throw new ContainerException('容器异常: '.$e->getMessage());
+            throw new ContainerException('容器异常: ' . $e->getMessage());
         }
     }
 
@@ -168,7 +184,7 @@ class Artful
         return Artful::getContainer()->has($service);
     }
 
-    public static function setContainer(null|Closure|ContainerInterface $container): void
+    public static function setContainer(null | Closure | ContainerInterface $container): void
     {
         self::$container = $container;
     }
@@ -224,7 +240,7 @@ class Artful
      * @throws InvalidParamsException
      * @throws ServiceNotFoundException
      */
-    public static function shortcut(string $shortcut, array $params = []): null|Collection|MessageInterface|Rocket
+    public static function shortcut(string $shortcut, array $params = []): null | Collection | MessageInterface | Rocket
     {
         if (!class_exists($shortcut) || !in_array(ShortcutInterface::class, class_implements($shortcut))) {
             throw new InvalidParamsException(Exception::PARAMS_SHORTCUT_INVALID, "参数异常: [{$shortcut}] 未实现 `ShortcutInterface`");
@@ -240,8 +256,9 @@ class Artful
      * @throws ContainerException
      * @throws InvalidParamsException
      */
-    public static function artful(array $plugins, array $params): null|Collection|MessageInterface|Rocket
+    public static function artful(array $plugins, array $params): null | Collection | MessageInterface | Rocket
     {
+
         Event::dispatch(new Event\ArtfulStart($plugins, $params));
 
         self::verifyPlugin($plugins);
@@ -254,7 +271,7 @@ class Artful
             ->send((new Rocket())->setParams($params)->setPayload(new Collection()))
             ->through($plugins)
             ->via('assembly')
-            ->then(static fn ($rocket) => self::ignite($rocket));
+            ->then(static fn($rocket) => self::ignite($rocket));
 
         Event::dispatch(new Event\ArtfulEnd($rocket));
 
@@ -300,7 +317,7 @@ class Artful
         } catch (Throwable $e) {
             Logger::error('[Artful] 请求第三方 API 出错', ['message' => $e->getMessage(), 'rocket' => $rocket->toArray(), 'trace' => $e->getTrace()]);
 
-            throw new InvalidResponseException(Exception::REQUEST_RESPONSE_ERROR, '响应异常: 请求第三方 API 出错 - '.$e->getMessage(), [], $e);
+            throw new InvalidResponseException(Exception::REQUEST_RESPONSE_ERROR, '响应异常: 请求第三方 API 出错 - ' . $e->getMessage(), [], $e);
         }
 
         Logger::info('[Artful] 请求第三方 API 成功', ['rocket' => $rocket->toArray()]);
@@ -315,13 +332,14 @@ class Artful
      */
     protected static function verifyPlugin(array $plugins): void
     {
+
         foreach ($plugins as $plugin) {
             if (is_callable($plugin)) {
                 continue;
             }
 
             if ((is_object($plugin)
-                    || (is_string($plugin) && class_exists($plugin)))
+                || (is_string($plugin) && class_exists($plugin)))
                 && in_array(PluginInterface::class, class_implements($plugin))) {
                 continue;
             }
@@ -333,7 +351,7 @@ class Artful
     /**
      * @throws ContainerException
      */
-    private function registerServices(array $config, null|Closure|ContainerInterface $container = null): void
+    private function registerServices(array $config, null | Closure | ContainerInterface $container = null): void
     {
         foreach ($this->coreService as $service) {
             self::registerService($service, ContainerServiceProvider::class == $service ? $container : $config);
