@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Yansongda\Artful\Service;
 
@@ -9,7 +9,6 @@ use Hyperf\Context\ApplicationContext as HyperfContainer;
 use Hyperf\Pimple\ContainerFactory as DefaultContainer;
 use Illuminate\Container\Container as LaravelContainer;
 use Psr\Container\ContainerInterface;
-use think\Container as ThinkPHPApplication;
 use Yansongda\Artful\Artful;
 use Yansongda\Artful\Contract\ServiceProviderInterface;
 use Yansongda\Artful\Exception\ContainerException;
@@ -22,11 +21,8 @@ use Yansongda\Artful\Exception\Exception;
 class ContainerServiceProvider implements ServiceProviderInterface
 {
     private array $detectApplication = [
-        'thinkphp' => ThinkPHPApplication::class,
-        'laravel'  => LaravelContainer::class,
-        'hyperf'   => HyperfContainer::class,
-        'thinkphp' => ThinkPHPApplication::class,
-
+        'laravel' => LaravelContainer::class,
+        'hyperf' => HyperfContainer::class,
     ];
 
     /**
@@ -45,7 +41,7 @@ class ContainerServiceProvider implements ServiceProviderInterface
         }
 
         foreach ($this->detectApplication as $framework => $application) {
-            $method = $framework . 'Application';
+            $method = $framework.'Application';
 
             if (class_exists($application) && method_exists($this, $method) && $this->{$method}()) {
                 return;
@@ -61,7 +57,7 @@ class ContainerServiceProvider implements ServiceProviderInterface
      */
     protected function laravelApplication(): bool
     {
-        Artful::setContainer(static fn() => LaravelContainer::getInstance());
+        Artful::setContainer(static fn () => LaravelContainer::getInstance());
 
         Artful::set(\Yansongda\Artful\Contract\ContainerInterface::class, LaravelContainer::getInstance());
 
@@ -82,25 +78,12 @@ class ContainerServiceProvider implements ServiceProviderInterface
             return false;
         }
 
-        Artful::setContainer(static fn() => HyperfContainer::getContainer());
+        Artful::setContainer(static fn () => HyperfContainer::getContainer());
 
         Artful::set(\Yansongda\Artful\Contract\ContainerInterface::class, HyperfContainer::getContainer());
 
         if (!Artful::has(ContainerInterface::class)) {
             Artful::set(ContainerInterface::class, HyperfContainer::getContainer());
-        }
-
-        return true;
-    }
-
-    protected function thinkphpApplication()
-    {
-        Artful::setContainer(static fn() => ThinkPHPApplication::getInstance());
-
-        Artful::set(\Yansongda\Artful\Contract\ContainerInterface::class, ThinkPHPApplication::getInstance());
-
-        if (!Artful::has(ContainerInterface::class)) {
-            Artful::set(ContainerInterface::class, ThinkPHPApplication::getInstance());
         }
 
         return true;
