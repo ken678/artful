@@ -80,8 +80,11 @@ class Pipeline
                     // If the pipe is a string we will parse the string and resolve the class out
                     // of the dependency injection container. We can then build a callable and
                     // execute the pipe function giving in the parameters that are required.
-                    $pipe = $this->container->make($name);
-
+                    if ($this->container instanceof \think\Container) {
+                        $pipe = $this->container->make($name);
+                    } else {
+                        $pipe = $this->container->get($name);
+                    }
                     $parameters = array_merge([$passable, $stack], $parameters);
                 } else {
                     // If the pipe is already an object we'll just make a callable and pass it to

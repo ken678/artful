@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'ad183d3cb6c9bac1b323dabaaed4d75279b4949b',
+        'reference' => '18d6e7b1a473cb0ec7c3b321c757671370890792',
         'name' => 'topthink/think',
         'dev' => true,
     ),
@@ -37,24 +37,6 @@
             'reference' => 'a70f5c95fb43bc83f07c9c948baa0dc1829bf201',
             'dev_requirement' => false,
         ),
-        'illuminate/container' => array(
-            'pretty_version' => 'v9.52.16',
-            'version' => '9.52.16.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../illuminate/container',
-            'aliases' => array(),
-            'reference' => '1641dda2d0750b68bb1264a3b37ff3973f2e6265',
-            'dev_requirement' => true,
-        ),
-        'illuminate/contracts' => array(
-            'pretty_version' => 'v9.52.16',
-            'version' => '9.52.16.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../illuminate/contracts',
-            'aliases' => array(),
-            'reference' => '44f65d723b13823baa02ff69751a5948bde60c22',
-            'dev_requirement' => true,
-        ),
         'psr/container' => array(
             'pretty_version' => '2.0.2',
             'version' => '2.0.2.0',
@@ -63,12 +45,6 @@
             'aliases' => array(),
             'reference' => 'c71ecc56dfe541dbd90c5360474fbc405f8d5963',
             'dev_requirement' => false,
-        ),
-        'psr/container-implementation' => array(
-            'dev_requirement' => true,
-            'provided' => array(
-                0 => '1.1|2.0',
-            ),
         ),
         'psr/event-dispatcher' => array(
             'pretty_version' => '1.0.0',
@@ -193,7 +169,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'ad183d3cb6c9bac1b323dabaaed4d75279b4949b',
+            'reference' => '18d6e7b1a473cb0ec7c3b321c757671370890792',
             'dev_requirement' => false,
         ),
         'topthink/think-helper' => array(
