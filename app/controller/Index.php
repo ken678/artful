@@ -9,21 +9,23 @@ class Index extends BaseController
 {
     public function index()
     {
+        !defined('DS') && define('DS', DIRECTORY_SEPARATOR);
+        !defined('ADDON_PATH') && define('ADDON_PATH', app()->getRootPath() . 'addons' . DS);
         $config = [
             'alipay' => [
                 'default' => [
                     // 必填-支付宝分配的 app_id
-                    'app_id'                  => '2016082000295641',
+                    'app_id'                  => '2017032306368806',
                     // 必填-应用私钥 字符串或路径
                     // 在 https://open.alipay.com/develop/manage 《应用详情->开发设置->接口加签方式》中设置
-                    'app_secret_cert'         => 'MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCDRjOg5DnX+8L+rB8d2MbrQ30Z7JPM4hiDhawHSwQCQ7RlmQNpl6b/N6IrPLcPFC1uii179U5Il5xTZynfjkUyJjnHusqnmHskftLJDKkmGbSUFMAlOv+NlpUWMJ2A+VUopl+9FLyqcV+XgbaWizxU3LsTtt64v89iZ2iC16H6/6a3YcP+hDZUjiNGQx9cuwi9eJyykvcwhDkFPxeBxHbfwppsul+DYUyTCcl0Ltbga/mUechk5BksW6yPPwprYHQBXyM16Jc3q5HbNxh3660FyvUBFLuVWIBs6RtR2gZCa6b8rOtCkPQKhUKvzRMlgheOowXsWdk99GjxGQDK5W4XAgMBAAECggEAYPKnjlr+nRPBnnNfR5ugzH67FToyrU0M7ZT6xygPfdyijaXDb2ggXLupeGUOjIRKSSijDrjLZ7EQMkguFHvtfmvcoDTDFaL2zq0a3oALK6gwRGxOuzAnK1naINkmeOmqiqrUab+21emEv098mRGbLNEXGCgltCtz7SiRdo/pgIPZ1wHj4MH0b0K2bFG3xwr51EyaLXKYH4j6w9YAXXsTdvzcJ+eRE0Yq4uGPfkziqg8d0xXSEt90HmCGHKo4O2eh1w1IlBcHfK0F6vkeUAtrtAV01MU2bNoRU147vKFxjDOVBlY1nIZY/drsbiPMuAfSsodL0hJxGSYivbKTX4CWgQKBgQDd0MkF5AIPPdFC+fhWdNclePRw4gUkBwPTIUljMP4o+MhJNrHp0sEy0sr1mzYsOT4J20hsbw/qTnMKGdgy784bySf6/CC7lv2hHp0wyS3Es0DRJuN+aTyyONOKGvQqd8gvuQtuYJy+hkIoHygjvC3TKndX1v66f9vCr/7TS0QPywKBgQCXgVHERHP+CarSAEDG6bzI878/5yqyJVlUeVMG5OXdlwCl0GAAl4mDvfqweUawSVFE7qiSqy3Eaok8KHkYcoRlQmAefHg/C8t2PNFfNrANDdDB99f7UhqhXTdBA6DPyW02eKIaBcXjZ7jEXZzA41a/zxZydKgHvz4pUq1BdbU5ZQKBgHyqGCDgaavpQVAUL1df6X8dALzkuqDp9GNXxOgjo+ShFefX/pv8oCqRQBJTflnSfiSKAqU2skosdwlJRzIxhrQlFPxBcaAcl0VTcGL33mo7mIU0Bw2H1d4QhAuNZIbttSvlIyCQ2edWi54DDMswusyAhHxwz88/huJfiad1GLaLAoGASIweMVNuD5lleMWyPw2x3rAJRnpVUZTc37xw6340LBWgs8XCEsZ9jN4t6s9H8CZLiiyWABWEBufU6z+eLPy5NRvBlxeXJOlq9iVNRMCVMMsKybb6b1fzdI2EZdds69LSPyEozjkxdyE1sqH468xwv8xUPV5rD7qd83+pgwzwSJkCgYBrRV0OZmicfVJ7RqbWyneBG03r7ziA0WTcLdRWDnOujQ9orhrkm+EY2evhLEkkF6TOYv4QFBGSHfGJ0SwD7ghbCQC/8oBvNvuQiPWI8B+00LwyxXNrkFOxy7UfIUdUmLoLc1s/VdBHku+JEd0YmEY+p4sjmcRnlu4AlzLxkWUTTg==',
+                    'app_secret_cert'         => 'MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCpKj5D2BLscbVImz1lCVs3kFkO5UA0rHCWVcZyexGDe2O02gqH7dKMMAuuITckCjvCWvdC2SgmVxRimIqZbNryjxbL0Wdp3WIGkgIVui2ndxAZqCcEnIt9vsP4LLFl5CkgWEs6CvcjQsWLflfH9zCxV/YGRZXbXEzGGx+SRjO+GLgxFbBycliXFvq4IwnWF9sbgtiWD58QKLBXoe8ie+lvrKnm6wnhFb/bmRf4/9PemZYs86jPrS9/IMw1kCcXXofVpevbySNT6lqoJSgifPX0fyq6La5rGb1jnJnOxpVwOERXW5rzemNkzThkxMfbbT9jErAEdXs8oB+QxsfEpNlrAgMBAAECggEAFX2+Z1QeI1fW1iCSzjFAG3EFP3U0kPyPWSoQih7EfNXCNwm0aMx4AUNhWH/zx2pdaTWxUBbSmPxbJKOIiDFiJ4qyNLan0rVDbN5D0YrTngDsVLYeLuHMfu8ram4TI4S3DNrqw7b86sfi3PPyJv9qej1Yjjds8G9reYecnTK6BB5eP5xNHCgOX9HeMWMnQFKk61qfXiQNnU/n6i1PILPmhUB01d9NmpA33YkoVr6YRBAw/tcB/ZeuH4V77crCAPpZdejIXJqqeuYqrY4Y6xHHOV3//LSSxjq2sXEcPFKqogMH5IjdLR5G/UK1T3U2A2c/MeOWkdAsVkoBjQfRCf1M0QKBgQD1YevUdH9SEad+Tdlr9ooipU8If36FPevHHF6BUlEzInV84x3LhoEgzljNHR1LV+4boDGAmARfo1rdMyJt/yNEhbX4YySYP6oOIZaYvINugHfcjuqL/gmo1iD982le/7N9AAQkPaFG8at6OBHYt05r3Y3x8jGk/pe6NLLltvVKjwKBgQCwfBFsjPLi28QKPlbhObUJ4UcZjNZ5R5VdBbnTleZ6P3jpDcJvzJia8HDA7j4woXebS2PccC7BP1gfPj3DjokKHWG081p4lS83cRJT1g6c0WaEoY9HunAqzwqnb2oJGPYdgf7MT4nnRYMxiE8lPK3nmF+GQMsOzXzupOf5XZ4hZQKBgCrEHDP08dO92/E5ZDFa0IxlPzb98XELb7JOEXJ8hEZjNRLFCoZUNOEg1X06G8br1kXeT4JX/Dsm30k6BkAhfWYN378gmFoojlzUIckQ4d86aKl6BwrLBaf1Wd6os66o5gFdJVujmh4hNH+ikgmxOOu3u2t1iI13Cb6cPKmoj2ulAoGAFxz4jzXabXmIsCq/6BlNq3CUhjUataF5X0hrsNk16Ra8+BC0QT4TUl9g9PN+s5HB/1WdS3ZpuSdZnCXjouPc8LUuYatpUtd+6ozlcJNdMI6AFaivAh7Zp9GbvJfr1CsvuGeY/hsAnYhOCUOn0eGjiOw8vnFn5pVk4kA4nUD0f70CgYEAh5tSwH0ADQfhAZplbNHY3Tq15ZtTJK6Cz5Pynr6RKhYO7Xzzg+56RVkg+SkkJSeBQZ7h4el0l5ZqtUr33Ff17YAkAjHf6cqYONxK77vMtZUkrXLvGyKSJWMPXuXRQkBnr2ilEZ9KJ/HdvvWH0k+pHMpUKSONyi0tLxdpKsOma/w=',
                     // 必填-应用公钥证书 路径
                     // 设置应用私钥后，即可下载得到以下3个证书
-                    'app_public_cert_path'    => '/Users/yansongda/pay/cert/appCertPublicKey_2016082000295641.crt',
+                    'app_public_cert_path'    => ADDON_PATH . 'pay' . DS . 'certs' . DS . 'alipay' . DS . 'appPublicCert.crt',
                     // 必填-支付宝公钥证书 路径
-                    'alipay_public_cert_path' => '/Users/yansongda/pay/cert/alipayCertPublicKey_RSA2.crt',
+                    'alipay_public_cert_path' => ADDON_PATH . 'pay' . DS . 'certs' . DS . 'alipay' . DS . 'alipayPublicCert.crt',
                     // 必填-支付宝根证书 路径
-                    'alipay_root_cert_path'   => '/Users/yansongda/pay/cert/alipayRootCert.crt',
+                    'alipay_root_cert_path'   => ADDON_PATH . 'pay' . DS . 'certs' . DS . 'alipay' . DS . 'alipayRootCert.crt',
                     'return_url'              => 'https://yansongda.cn/alipay/return',
                     'notify_url'              => 'https://yansongda.cn/alipay/notify',
                     // 选填-第三方应用授权token
@@ -47,7 +49,14 @@ class Index extends BaseController
                 // 更多配置项请参考 [Guzzle](https://guzzle-cn.readthedocs.io/zh_CN/latest/request-options.html)
             ],
         ];
-        $pay = Pay::config($config);
+        $pay    = Pay::alipay($config);
+        $params = [
+            'out_trade_no' => 123456789, //你的订单号
+            'total_amount' => 0.01, //单位元
+            'subject' => '测试支付',
+        ];
+        $result = $pay->scan($params);
+        dump($result);
     }
 
 }
